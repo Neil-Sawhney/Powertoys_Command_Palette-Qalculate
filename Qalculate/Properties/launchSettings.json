@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Qalculate (Package)": {
+      "commandName": "MsixPackage",
+      "doNotLaunchApp": true
+    },
+    "Qalculate (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

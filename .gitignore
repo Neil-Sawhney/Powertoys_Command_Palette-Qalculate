@@ -1,0 +1,17 @@
+# Build output
+**/bin/
+**/obj/
+**/AppPackages/
+**/publish/
+Installer/
+
+# Bundled qalc runtime (large; generate with scripts/bundle-qalc.ps1)
+Qalculate/qalc/**
+!Qalculate/qalc/.gitkeep
+
+# Signing secrets — use GitHub Actions secrets for CI
+*.pfx
+
+# User-specific
+.vs/
+*.user

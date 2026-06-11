@@ -1,0 +1,66 @@
+name: Release MSIX
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+env:
+  DOTNET_VERSION: '10.0.x'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        platform: [x64, ARM64]
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Import signing certificate
+        if: env.SIGNING_PFX_BASE64 != ''
+        env:
+          SIGNING_PFX_BASE64: ${{ secrets.SIGNING_PFX_BASE64 }}
+          SIGNING_PFX_PASSWORD: ${{ secrets.SIGNING_PFX_PASSWORD }}
+        run: |
+          $bytes = [Convert]::FromBase64String($env:SIGNING_PFX_BASE64)
+          [IO.File]::WriteAllBytes("Qalculate/Qalculate_TemporaryKey.pfx", $bytes)
+
+      - name: Build MSIX
+        run: |
+          dotnet build Qalculate/Qalculate.csproj `
+            -c Release `
+            -p:Platform=${{ matrix.platform }} `
+            -p:GenerateAppxPackageOnBuild=true `
+            -p:AppxPackageDir=AppPackages/${{ matrix.platform }}/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: msix-${{ matrix.platform }}
+          path: Qalculate/AppPackages/**/*.msix
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*.msix
+          generate_release_notes: true

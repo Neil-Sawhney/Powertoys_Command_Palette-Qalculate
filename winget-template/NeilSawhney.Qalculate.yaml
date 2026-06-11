@@ -1,0 +1,53 @@
+# Template WinGet manifest — copy to winget-pkgs after updating URLs and hashes.
+# See PUBLISH.md for the full submission workflow.
+#
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.singleton.1.6.0.schema.json
+
+PackageIdentifier: NeilSawhney.Qalculate
+PackageVersion: 1.0.0
+PackageLocale: en-US
+Publisher: Neil Sawhney
+PublisherUrl: https://github.com/neilsawhney
+PublisherSupportUrl: https://github.com/neilsawhney/Qalculate/issues
+PackageName: Qalculate for Command Palette
+PackageUrl: https://github.com/neilsawhney/Qalculate
+License: MIT
+LicenseUrl: https://github.com/neilsawhney/Qalculate/blob/main/LICENSE
+ShortDescription: Mixed-unit math and built-in physical constants — Qalculate for Command Palette.
+Description: |-
+  Evaluate expressions using the Qalculate CLI from PowerToys Command Palette.
+  Do math with mixed units (5 miles + 10 km, 10 mph * 2 hours), then convert.
+  Hundreds of built-in constants: FineStructure, planck, proton_mass, PlanckLength,
+  k_B, SpeedOfLight, and more — with automatic unit handling.
+Moniker: qalculate-cmdpal
+Tags:
+- calculator
+- command-palette
+- math
+- powertoys
+- qalculate
+- windows-commandpalette-extension
+Commands:
+- qalculate
+Installers:
+- Architecture: x64
+  InstallerType: msix
+  InstallerUrl: https://github.com/neilsawhney/Qalculate/releases/download/v1.0.0/Qalculate_1.0.0.0_x64.msix
+  InstallerSha256: REPLACE_WITH_SHA256
+  SignatureSha256: REPLACE_WITH_SIGNATURE_SHA256
+  PackageFamilyName: REPLACE_WITH_PACKAGE_FAMILY_NAME
+  MinimumOSVersion: 10.0.19041.0
+- Architecture: arm64
+  InstallerType: msix
+  InstallerUrl: https://github.com/neilsawhney/Qalculate/releases/download/v1.0.0/Qalculate_1.0.0.0_arm64.msix
+  InstallerSha256: REPLACE_WITH_SHA256
+  SignatureSha256: REPLACE_WITH_SIGNATURE_SHA256
+  PackageFamilyName: REPLACE_WITH_PACKAGE_FAMILY_NAME
+  MinimumOSVersion: 10.0.19041.0
+Dependencies:
+  PackageDependencies:
+  - PackageIdentifier: qalculate.qalculate
+  - PackageIdentifier: Microsoft.WindowsAppRuntime.1.7
+    MinimumVersion: 7001.632.252.0
+ManifestType: singleton
+ManifestVersion: 1.6.0
