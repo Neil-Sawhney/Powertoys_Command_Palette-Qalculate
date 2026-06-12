@@ -71,7 +71,7 @@ winget install qalculate.qalculate   # if not already installed
 
 ## Publishing
 
-See [PUBLISH.md](PUBLISH.md) for WinGet and Extension Gallery submission steps.
+See Microsoft's guides for [WinGet](https://learn.microsoft.com/en-us/windows/powertoys/command-palette/publish-extension-winget) and the [Extension Gallery](https://learn.microsoft.com/en-us/windows/powertoys/command-palette/extension-gallery). Gallery metadata is in `gallery-submission/`; a WinGet manifest template is in `winget-template/`.
 
 ## License
 

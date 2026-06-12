@@ -12,6 +12,9 @@ Qalculate/qalc/**
 # Signing secrets — use GitHub Actions secrets for CI
 *.pfx
 
+# Local publishing checklist (not committed)
+PUBLISH.md
+
 # User-specific
 .vs/
 *.user
