@@ -1,9 +1,9 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/CmdPal-Extensions/main/.github/schemas/extension.schema.json",
   "id": "neil-sawhney.qalculate",
-  "title": "Qalculate",
+  "title": "PowerQalc",
   "shortDescription": "Mixed-unit math, built-in physical constants, and full Qalculate power — right in Command Palette.",
-  "description": "Bring the full power of Qalculate to your Command Palette workflow. Type expressions as you search and get instant results — then copy the answer with one keystroke.\n\n**Mixed-unit math:** Do real arithmetic with incompatible units in one expression — `5 miles + 10 km`, `10 mph * 2 hours`, `(5 ft + 8 in) to cm` — then convert when you want. Most calculators make you convert everything first.\n\n**Built-in constants:** Qalculate includes hundreds of physical, chemical, and mathematical constants you won't find on a typical calculator — use them by name in any expression, with automatic units:\n- `FineStructure` — fine-structure constant α (≈ 1/137)\n- `planck to eV s` — Planck constant in electron-volt seconds\n- `dirac to eV s` — reduced Planck constant ħ\n- `proton_mass to MeV/c^2` — proton mass in particle-physics units\n- `PlanckLength to nm` — fundamental length scale\n- `k_B to J/K` — Boltzmann constant\n- `SpeedOfLight to mph` — speed of light, any units you want\n- `molar_gas_constant * 298 K to J` — constants in real formulas\n\n**More:** algebra, calculus, currency, dates, trigonometry, and simple conversions like `100 miles to km`.\n\n**How it works**\nOpen Qalculate from Command Palette, type an expression, and results update live. Select a result to copy it to the clipboard.\n\n**Requirements**\nPowerToys with Command Palette enabled. Uses the Qalculate CLI (`qalc`). When installed via WinGet, Qalculate is installed automatically as a dependency.",
+  "description": "PowerQalc brings the full power of the Qalculate engine to your Command Palette workflow. Type expressions as you search and get instant results — then copy the answer with one keystroke.\n\n**Mixed-unit math:** Do real arithmetic with incompatible units in one expression — `5 miles + 10 km`, `10 mph * 2 hours`, `(5 ft + 8 in) to cm` — then convert when you want. Most calculators make you convert everything first.\n\n**Built-in constants:** The Qalculate engine includes hundreds of physical, chemical, and mathematical constants you won't find on a typical calculator — use them by name in any expression, with automatic units:\n- `FineStructure` — fine-structure constant α (≈ 1/137)\n- `planck to eV s` — Planck constant in electron-volt seconds\n- `dirac to eV s` — reduced Planck constant ħ\n- `proton_mass to MeV/c^2` — proton mass in particle-physics units\n- `PlanckLength to nm` — fundamental length scale\n- `k_B to J/K` — Boltzmann constant\n- `SpeedOfLight to mph` — speed of light, any units you want\n- `molar_gas_constant * 298 K to J` — constants in real formulas\n\n**More:** algebra, calculus, currency, dates, trigonometry, and simple conversions like `100 miles to km`.\n\n**How it works**\nOpen PowerQalc from Command Palette, type an expression, and results update live. Select a result to copy it to the clipboard. Recent calculations appear when the search box is empty.\n\n**Requirements**\nPowerToys with Command Palette enabled. Includes the Qalculate CLI (`qalc`) — no separate install needed.",
   "author": {
     "name": "Neil Sawhney",
     "url": "https://github.com/neil-sawhney"
@@ -22,8 +22,8 @@
   ],
   "installSources": [
     {
-      "type": "winget",
-      "id": "Neil-Sawhney.Qalculate"
+      "type": "msstore",
+      "id": "9MZR396NKKGW"
     }
   ]
 }

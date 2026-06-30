@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
+    <AssemblyName>PowerQalc</AssemblyName>
+    <ApplicationTitle>PowerQalc</ApplicationTitle>
     <RootNamespace>Qalculate</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
 
@@ -12,13 +14,17 @@
 
     <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     <EnableMsixTooling>true</EnableMsixTooling>
-    <AppxPackageSigningEnabled>true</AppxPackageSigningEnabled>
+    <AppxPackageIdentityName>neilsawhney.PowerQalc</AppxPackageIdentityName>
+    <AppxPackagePublisher>CN=1E94D2E3-4049-4125-8B93-167073ACFAF4</AppxPackagePublisher>
+    <AppxPackageVersion>1.0.0.0</AppxPackageVersion>
+    <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
     <PackageCertificateKeyFile>Qalculate_TemporaryKey.pfx</PackageCertificateKeyFile>
     <PackageCertificatePassword>qalculate</PackageCertificatePassword>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
@@ -33,6 +39,10 @@
 
   <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)'=='Debug'">
+    <AppxManifest Include="Package.Debug.appxmanifest" />
   </ItemGroup>
 
   <!--
@@ -81,6 +91,10 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <!-- Local dev cert signs Debug packages; Store re-signs Release uploads -->
+    <AppxPackageSigningEnabled>true</AppxPackageSigningEnabled>
+    <AppxPackagePublisher>CN=Neil Sawhney</AppxPackagePublisher>
+
     <!-- In Debug builds, trimming is disabled by default, but all the trim & 
          AOT warnings are enabled. This gives debug builds a tighter inner loop,
          while at least warning about future trim violations -->
@@ -99,6 +113,10 @@
     <!-- In release, also ignore the aforementioned ILLink warning -->
     <ILLinkTreatWarningsAsErrors>false</ILLinkTreatWarningsAsErrors>
   </PropertyGroup>
+
+  <Target Name="EnsureQalcBundled" BeforeTargets="PrepareForBuild" Condition="'$(Configuration)'=='Release' and !Exists('qalc\qalc.exe')">
+    <Error Text="Release builds require a bundled qalc runtime. Run: ..\scripts\bundle-qalc.ps1 (or use ..\scripts\build-msix.ps1 which bundles automatically)." />
+  </Target>
 
 
 </Project>

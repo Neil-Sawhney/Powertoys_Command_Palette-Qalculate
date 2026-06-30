@@ -35,6 +35,12 @@ jobs:
           $bytes = [Convert]::FromBase64String($env:SIGNING_PFX_BASE64)
           [IO.File]::WriteAllBytes("Qalculate/Qalculate_TemporaryKey.pfx", $bytes)
 
+      - name: Install Qalculate (for bundling)
+        run: winget install qalculate.qalculate --accept-package-agreements --accept-source-agreements
+
+      - name: Bundle qalc runtime
+        run: .\scripts\bundle-qalc.ps1
+
       - name: Build MSIX
         run: |
           dotnet build Qalculate/Qalculate.csproj `

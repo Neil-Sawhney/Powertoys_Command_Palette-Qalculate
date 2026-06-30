@@ -14,13 +14,20 @@ public partial class QalculateCommandsProvider : CommandProvider
 
     public QalculateCommandsProvider()
     {
-        DisplayName = "Qalculate";
-        Icon = new IconInfo("\uE8EF");
+        DisplayName = "PowerQalc";
+        Icon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png");
         Settings = _settings.Settings;
 
         var page = new QalculatePage(_settings);
         _commands = [
-            new CommandItem(page) { Title = DisplayName },
+            new CommandItem(page)
+            {
+                Title = DisplayName,
+                MoreCommands =
+                [
+                    new CommandContextItem(new ClearHistoryCommand(_settings.History)),
+                ],
+            },
         ];
     }
 

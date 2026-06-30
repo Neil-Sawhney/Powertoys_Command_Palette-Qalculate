@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CommandPalette.Extensions;
@@ -12,7 +13,8 @@ namespace Qalculate;
 
 internal sealed partial class QalculatePage : DynamicListPage
 {
-    private static readonly IconInfo CalculatorIcon = new("\uE8EF");
+    private static readonly IconInfo AppIcon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png");
+    private static readonly IconInfo HistoryIcon = new("\uE81C");
 
     private readonly SettingsManager _settings;
     private CancellationTokenSource? _evaluationCts;
@@ -22,10 +24,12 @@ internal sealed partial class QalculatePage : DynamicListPage
     public QalculatePage(SettingsManager settings)
     {
         _settings = settings;
-        Icon = CalculatorIcon;
-        Title = "Qalculate";
-        Name = "Calculate";
-        PlaceholderText = "Try mixed units: 5 miles + 10 km, 10 mph * 2 hours, (5 ft + 8 in) to cm";
+        Icon = AppIcon;
+        Title = "PowerQalc";
+        Name = "PowerQalc";
+        PlaceholderText = "Try: 5 miles + 10 km, 10 mph * x = 20 mi to min, 240 * 15%, x^2 + 2x = 0, 1 ly to km";
+
+        _settings.History.Changed += OnHistoryChanged;
     }
 
     public override void UpdateSearchText(string oldSearch, string newSearch)
@@ -37,7 +41,7 @@ internal sealed partial class QalculatePage : DynamicListPage
 
         if (string.IsNullOrWhiteSpace(_query))
         {
-            _items = [];
+            _items = BuildHistoryItems();
             RaiseItemsChanged();
             return;
         }
@@ -47,7 +51,7 @@ internal sealed partial class QalculatePage : DynamicListPage
             {
                 Title = "Calculating...",
                 Subtitle = _query,
-                Icon = CalculatorIcon,
+                Icon = AppIcon,
             },
         ];
         RaiseItemsChanged();
@@ -56,6 +60,15 @@ internal sealed partial class QalculatePage : DynamicListPage
     }
 
     public override IListItem[] GetItems() => _items;
+
+    private void OnHistoryChanged(object? sender, EventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(_query))
+        {
+            _items = BuildHistoryItems();
+            RaiseItemsChanged();
+        }
+    }
 
     private async Task EvaluateAsync(string expression, CancellationToken cancellationToken)
     {
@@ -71,6 +84,11 @@ internal sealed partial class QalculatePage : DynamicListPage
             if (cancellationToken.IsCancellationRequested)
             {
                 return;
+            }
+
+            if (result.Success && !string.IsNullOrWhiteSpace(result.Output) && _settings.SaveHistory)
+            {
+                _settings.History.Add(expression.Trim(), result.Output);
             }
 
             _items = BuildResultItems(expression, result);
@@ -91,12 +109,45 @@ internal sealed partial class QalculatePage : DynamicListPage
                 {
                     Title = "Evaluation failed",
                     Subtitle = ex.Message,
-                    Icon = CalculatorIcon,
+                    Icon = AppIcon,
                 },
             ];
             RaiseItemsChanged();
         }
     }
+
+    private IListItem[] BuildHistoryItems()
+    {
+        var history = _settings.History.Items;
+        if (history.Count == 0)
+        {
+            return [
+                new ListItem(new NoOpCommand())
+                {
+                    Title = "No recent calculations",
+                    Subtitle = "Results you evaluate will appear here",
+                    Icon = HistoryIcon,
+                },
+            ];
+        }
+
+        return history
+            .OrderByDescending(item => item.Timestamp)
+            .Select(item => CreateHistoryListItem(item))
+            .ToArray();
+    }
+
+    private IListItem CreateHistoryListItem(HistoryItem item) =>
+        new ListItem(new CopyTextCommand(item.Result))
+        {
+            Title = item.Result,
+            Subtitle = item.Query,
+            Icon = HistoryIcon,
+            MoreCommands =
+            [
+                new CommandContextItem(new DeleteHistoryCommand(_settings.History, item.Id)),
+            ],
+        };
 
     private static IListItem[] BuildResultItems(string expression, QalculateResult result)
     {
@@ -108,7 +159,7 @@ internal sealed partial class QalculatePage : DynamicListPage
                 {
                     Title = message,
                     Subtitle = expression,
-                    Icon = CalculatorIcon,
+                    Icon = AppIcon,
                 },
             ];
         }
@@ -118,7 +169,7 @@ internal sealed partial class QalculatePage : DynamicListPage
             {
                 Title = result.Output,
                 Subtitle = expression,
-                Icon = CalculatorIcon,
+                Icon = AppIcon,
             },
         ];
     }
