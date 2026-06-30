@@ -30,7 +30,7 @@ internal sealed class SettingsManager
         _settings.Add(new ToggleSetting(
             "saveHistory",
             "Save calculation history",
-            "Remember recent expressions and results on this device.",
+            "Save when you copy a result (Enter) or press Ctrl+Enter. Live previews are not saved.",
             true));
 
         _settings.Add(new TextSetting(

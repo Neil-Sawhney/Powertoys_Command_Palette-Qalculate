@@ -4,7 +4,7 @@
     Copies a working qalc CLI runtime into Qalculate/qalc for bundling in the MSIX.
 .DESCRIPTION
     Qalculate needs qalc.exe plus many DLLs and the definitions/ folder (~160 MB).
-    Release builds require this bundle — run manually or via build.ps1 / build-msix.ps1.
+    Release builds require this bundle — run manually or via build.ps1 / test.ps1.
 .PARAMETER Source
     Path to a Qalculate install root that contains qalc.exe (Scoop, winget, or manual install).
 .PARAMETER Minimal

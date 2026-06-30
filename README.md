@@ -11,7 +11,7 @@ It also ships with a **huge library of built-in physical, chemical, and mathemat
 ## Features
 
 - Live evaluation as you type (with debounce)
-- Calculation history (recent results when the search box is empty)
+- Calculation history when you copy (Enter) or save (Ctrl+Enter) — not on every keystroke
 - Copy results to the clipboard
 - Bundled `qalc` runtime — works out of the box, no separate Qalculate install
 - Configurable `qalc` path override in extension settings
@@ -43,11 +43,11 @@ The published MSIX bundles the Qalculate CLI (`qalc`) — no extra install step 
 # Bundle qalc, build, and install for local testing (admin)
 .\test.ps1
 
-# Store upload bundle
-.\build.ps1 -Configuration Release
+# Production Store upload bundle (x64 + ARM64 .msixbundle)
+.\build.ps1
 ```
 
-`build.ps1` runs `bundle-qalc.ps1` automatically. You need a local Qalculate install once (e.g. `winget install qalculate.qalculate`) so the bundle script can copy the runtime.
+Both scripts run `bundle-qalc.ps1` automatically. You need a local Qalculate install once (e.g. `winget install qalculate.qalculate`) so the bundle script can copy the runtime.
 
 After installing, run **Reload** in Command Palette.
 

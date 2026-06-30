@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
+using Windows.System;
 
 namespace Qalculate;
 
@@ -86,11 +87,6 @@ internal sealed partial class QalculatePage : DynamicListPage
                 return;
             }
 
-            if (result.Success && !string.IsNullOrWhiteSpace(result.Output) && _settings.SaveHistory)
-            {
-                _settings.History.Add(expression.Trim(), result.Output);
-            }
-
             _items = BuildResultItems(expression, result);
             RaiseItemsChanged();
         }
@@ -125,7 +121,7 @@ internal sealed partial class QalculatePage : DynamicListPage
                 new ListItem(new NoOpCommand())
                 {
                     Title = "No recent calculations",
-                    Subtitle = "Results you evaluate will appear here",
+                    Subtitle = "Enter copies and saves; Ctrl+Enter saves without copying",
                     Icon = HistoryIcon,
                 },
             ];
@@ -149,7 +145,7 @@ internal sealed partial class QalculatePage : DynamicListPage
             ],
         };
 
-    private static IListItem[] BuildResultItems(string expression, QalculateResult result)
+    private IListItem[] BuildResultItems(string expression, QalculateResult result)
     {
         if (!result.Success || string.IsNullOrWhiteSpace(result.Output))
         {
@@ -164,12 +160,25 @@ internal sealed partial class QalculatePage : DynamicListPage
             ];
         }
 
+        var trimmedQuery = expression.Trim();
+        var output = result.Output;
+        var copyCommand = new CopyAndSaveCalculationCommand(_settings, trimmedQuery, output);
+        var saveCommand = new SaveCalculationCommand(_settings, trimmedQuery, output, () => SearchText = string.Empty);
+
         return [
-            new ListItem(new CopyTextCommand(result.Output))
+            new ListItem(copyCommand)
             {
-                Title = result.Output,
-                Subtitle = expression,
+                Title = output,
+                Subtitle = $"{expression} · Enter to copy · Ctrl+Enter to save",
                 Icon = AppIcon,
+                MoreCommands =
+                [
+                    new CommandContextItem(saveCommand)
+                    {
+                        RequestedShortcut = KeyChordHelpers.FromModifiers(
+                            true, false, false, false, (int)VirtualKey.Enter),
+                    },
+                ],
             },
         ];
     }

@@ -24,7 +24,7 @@ function Get-DebugMsixPath {
 
 function Import-DevCertificate {
     if (-not (Test-Path $cerPath)) {
-        throw "Dev certificate not found: $cerPath. Run build.ps1 or test.ps1 to create it."
+        throw "Dev certificate not found: $cerPath. Run test.ps1 to create it."
     }
 
     $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($cerPath)

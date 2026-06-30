@@ -85,6 +85,8 @@
         "panel": "shared"
       }
     },
+    {
+      "label": "build: debug x64 msix inner",
       "type": "process",
       "command": "dotnet",
       "args": [
@@ -111,7 +113,7 @@
         "-ExecutionPolicy",
         "Bypass",
         "-File",
-        "${workspaceFolder}/scripts/build-msix.ps1"
+        "${workspaceFolder}/build.ps1"
       ],
       "group": "build",
       "problemMatcher": [],

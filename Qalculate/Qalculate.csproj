@@ -16,7 +16,7 @@
     <EnableMsixTooling>true</EnableMsixTooling>
     <AppxPackageIdentityName>neilsawhney.PowerQalc</AppxPackageIdentityName>
     <AppxPackagePublisher>CN=1E94D2E3-4049-4125-8B93-167073ACFAF4</AppxPackagePublisher>
-    <AppxPackageVersion>1.0.0.0</AppxPackageVersion>
+    <AppxPackageVersion>1.0.1.0</AppxPackageVersion>
     <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
     <PackageCertificateKeyFile>Qalculate_TemporaryKey.pfx</PackageCertificateKeyFile>
     <PackageCertificatePassword>qalculate</PackageCertificatePassword>
@@ -115,7 +115,7 @@
   </PropertyGroup>
 
   <Target Name="EnsureQalcBundled" BeforeTargets="PrepareForBuild" Condition="'$(Configuration)'=='Release' and !Exists('qalc\qalc.exe')">
-    <Error Text="Release builds require a bundled qalc runtime. Run: ..\scripts\bundle-qalc.ps1 (or use ..\scripts\build-msix.ps1 which bundles automatically)." />
+    <Error Text="Release builds require a bundled qalc runtime. Run: ..\scripts\bundle-qalc.ps1 (or use ..\build.ps1 which bundles automatically)." />
   </Target>
 
 
