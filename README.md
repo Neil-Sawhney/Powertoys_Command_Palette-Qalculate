@@ -8,6 +8,9 @@ Unlike a simple unit converter, PowerQalc lets you **do real math with incompati
 
 It also ships with a **huge library of built-in physical, chemical, and mathematical constants** — far beyond what a typical calculator offers. Use them by name in any expression, with automatic unit handling.
 
+<img width="808" height="411" alt="image" src="https://github.com/user-attachments/assets/c15a3405-fec4-4481-a8b8-5589ea2fc27c" />
+
+
 ## Features
 
 - Live evaluation as you type (with debounce)
