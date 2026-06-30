@@ -13,7 +13,7 @@ namespace Qalculate;
 
 internal sealed partial class QalcSession : IDisposable
 {
-    private const int TimeoutMilliseconds = 2000;
+    private const int TimeoutMilliseconds = 5000;
 
     private readonly QalcPathInfo _qalc;
     private readonly string _userDirectory;
@@ -87,10 +87,10 @@ internal sealed partial class QalcSession : IDisposable
         }
 
         Restart();
-        StartProcess(cancellationToken);
+        StartProcess();
     }
 
-    private void StartProcess(CancellationToken cancellationToken)
+    private void StartProcess()
     {
         var startInfo = new ProcessStartInfo
         {
@@ -123,7 +123,6 @@ internal sealed partial class QalcSession : IDisposable
         _stdout = _process.StandardOutput;
         _ = _process.StandardError.ReadToEndAsync(CancellationToken.None);
 
-        WaitForPromptAsync(cancellationToken).GetAwaiter().GetResult();
         _ready = true;
     }
 
@@ -189,28 +188,6 @@ internal sealed partial class QalcSession : IDisposable
         }
 
         return string.Empty;
-    }
-
-    private async Task WaitForPromptAsync(CancellationToken cancellationToken)
-    {
-        if (_stdout is null)
-        {
-            return;
-        }
-
-        while (true)
-        {
-            var line = await ReadLineAsync(cancellationToken).ConfigureAwait(false);
-            if (line is null)
-            {
-                return;
-            }
-
-            if (StripAnsi(line).TrimEnd().StartsWith("> ", StringComparison.Ordinal))
-            {
-                return;
-            }
-        }
     }
 
     private async Task<string?> ReadLineAsync(CancellationToken cancellationToken)
