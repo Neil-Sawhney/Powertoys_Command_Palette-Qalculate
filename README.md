@@ -13,7 +13,7 @@ It also ships with a **huge library of built-in physical, chemical, and mathemat
 
 ## Features
 
-- Live evaluation as you type (with debounce)
+- Live evaluation as you type (with debounce); `ans()` and variables persist for the session
 - Calculation history when you copy (Enter) or save (Ctrl+Enter) — not on every keystroke
 - Copy results to the clipboard
 - Bundled `qalc` runtime — works out of the box, no separate Qalculate install

@@ -12,6 +12,7 @@ PowerQalc does not collect, transmit, or sell personal data. Calculations run lo
 
 - **Calculation history (optional):** Recent expressions and results may be saved locally when you copy a result (Enter) or press Ctrl+Enter. Live previews while typing are not saved. You can disable this in Command Palette → PowerQalc → Settings → **Save calculation history**, or clear history from the extension menu.
 - **Settings:** Preferences such as history limit and the optional `qalc` executable path are stored locally by PowerToys.
+- **Qalculate session (optional):** While PowerQalc is running, `qalc` may store session state (for example `ans()` and user-defined variables) under the extension settings folder.
 
 This data stays on your PC. The developer does not receive it.
 

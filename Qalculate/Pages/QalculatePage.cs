@@ -28,7 +28,7 @@ internal sealed partial class QalculatePage : DynamicListPage
         Icon = AppIcon;
         Title = "PowerQalc";
         Name = "PowerQalc";
-        PlaceholderText = "Try: 5 miles + 10 km, 10 mph * x = 20 mi to min, 240 * 15%, x^2 + 2x = 0, 1 ly to km";
+        PlaceholderText = "Try: 5 miles + 10 km, ans+1, x:=10 then x*2, 240 * 15%, 1 ly to km";
 
         _settings.History.Changed += OnHistoryChanged;
     }
@@ -79,7 +79,7 @@ internal sealed partial class QalculatePage : DynamicListPage
 
             var result = await QalculateService.EvaluateAsync(
                 expression,
-                _settings.QalcPath,
+                _settings.Session,
                 cancellationToken).ConfigureAwait(false);
 
             if (cancellationToken.IsCancellationRequested)

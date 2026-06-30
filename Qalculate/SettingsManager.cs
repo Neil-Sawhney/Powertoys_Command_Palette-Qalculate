@@ -9,13 +9,16 @@ using Microsoft.CommandPalette.Extensions.Toolkit;
 
 namespace Qalculate;
 
-internal sealed class SettingsManager
+internal sealed class SettingsManager : IDisposable
 {
     private const string DefaultQalcPath = "auto";
     private const string DefaultMaxHistory = "50";
     private const string SettingsFolderName = "neil-sawhney.powerqalc";
 
     private readonly Settings _settings;
+    private readonly string _settingsDirectory;
+    private QalcSession? _session;
+    private string? _sessionQalcPath;
 
     public SettingsManager()
     {
@@ -39,11 +42,11 @@ internal sealed class SettingsManager
             "Oldest entries are removed when this limit is reached.",
             DefaultMaxHistory));
 
-        var settingsDirectory = Utilities.BaseSettingsPath(SettingsFolderName);
-        Directory.CreateDirectory(settingsDirectory);
+        _settingsDirectory = Utilities.BaseSettingsPath(SettingsFolderName);
+        Directory.CreateDirectory(_settingsDirectory);
 
         History = new HistoryStore(
-            Path.Combine(settingsDirectory, "calculation_history.json"),
+            Path.Combine(_settingsDirectory, "calculation_history.json"),
             MaxHistoryEntries);
 
         _settings.SettingsChanged += OnSettingsChanged;
@@ -56,6 +59,25 @@ internal sealed class SettingsManager
     public QalcPathInfo QalcPath =>
         QalcPathResolver.Resolve(
             _settings.TryGetSetting("qalcPath", out string? path) ? path : DefaultQalcPath);
+
+    public QalcSession Session
+    {
+        get
+        {
+            var qalcPath = QalcPath;
+            var executablePath = qalcPath.ExecutablePath;
+            if (_session is null || !string.Equals(_sessionQalcPath, executablePath, StringComparison.OrdinalIgnoreCase))
+            {
+                _session?.Dispose();
+                _session = new QalcSession(
+                    qalcPath,
+                    Path.Combine(_settingsDirectory, "qalc-user"));
+                _sessionQalcPath = executablePath;
+            }
+
+            return _session;
+        }
+    }
 
     public bool SaveHistory =>
         !_settings.TryGetSetting("saveHistory", out bool save) || save;
@@ -75,6 +97,22 @@ internal sealed class SettingsManager
         }
     }
 
-    private void OnSettingsChanged(object? sender, Settings e) =>
+    public void Dispose() => _session?.Dispose();
+
+    private void OnSettingsChanged(object? sender, Settings e)
+    {
         History.SetCapacity(MaxHistoryEntries);
+
+        if (_settings.TryGetSetting("qalcPath", out string? _))
+        {
+            var executablePath = QalcPath.ExecutablePath;
+            if (_session is not null
+                && !string.Equals(_sessionQalcPath, executablePath, StringComparison.OrdinalIgnoreCase))
+            {
+                _session.Dispose();
+                _session = null;
+                _sessionQalcPath = null;
+            }
+        }
+    }
 }
