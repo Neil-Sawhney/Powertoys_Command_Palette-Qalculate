@@ -7,12 +7,12 @@ PackageIdentifier: Neil-Sawhney.PowerQalc
 PackageVersion: 1.0.2
 PackageLocale: en-US
 Publisher: Neil Sawhney
-PublisherUrl: https://github.com/neil-sawhney
-PublisherSupportUrl: https://github.com/neil-sawhney/Qalculate/issues
+PublisherUrl: https://github.com/Neil-Sawhney
+PublisherSupportUrl: https://github.com/Neil-Sawhney/PowerQalc/issues
 PackageName: PowerQalc
-PackageUrl: https://github.com/neil-sawhney/Qalculate
+PackageUrl: https://github.com/Neil-Sawhney/PowerQalc
 License: MIT
-LicenseUrl: https://github.com/neil-sawhney/Qalculate/blob/main/LICENSE
+LicenseUrl: https://github.com/Neil-Sawhney/PowerQalc/blob/main/LICENSE
 ShortDescription: Mixed-unit math and built-in physical constants — PowerQalc for Command Palette.
 Description: |-
   PowerQalc evaluates expressions using the Qalculate engine from PowerToys Command Palette.
@@ -33,14 +33,14 @@ Commands:
 Installers:
 - Architecture: x64
   InstallerType: msix
-  InstallerUrl: https://github.com/neil-sawhney/Qalculate/releases/download/v1.0.2/PowerQalc_1.0.2.0_x64.msix
+  InstallerUrl: https://github.com/Neil-Sawhney/PowerQalc/releases/download/v1.0.2/PowerQalc_1.0.2.0_x64.msix
   InstallerSha256: REPLACE_WITH_SHA256
   SignatureSha256: REPLACE_WITH_SIGNATURE_SHA256
   PackageFamilyName: neilsawhney.PowerQalc_r077z2sye8d9a
   MinimumOSVersion: 10.0.19041.0
 - Architecture: arm64
   InstallerType: msix
-  InstallerUrl: https://github.com/neil-sawhney/Qalculate/releases/download/v1.0.2/PowerQalc_1.0.2.0_arm64.msix
+  InstallerUrl: https://github.com/Neil-Sawhney/PowerQalc/releases/download/v1.0.2/PowerQalc_1.0.2.0_arm64.msix
   InstallerSha256: REPLACE_WITH_SHA256
   SignatureSha256: REPLACE_WITH_SIGNATURE_SHA256
   PackageFamilyName: neilsawhney.PowerQalc_r077z2sye8d9a

@@ -12,11 +12,16 @@ namespace Qalculate;
 
 internal sealed class HistoryStore
 {
+    internal const string HelpTitle = "Usage & help";
+    internal const string HelpSubtitle = "Conversions, percentages, and tips";
+
     private readonly string _filePath;
+    private readonly string _helpDismissedPath;
     private readonly List<HistoryItem> _items = [];
     private readonly Lock _lock = new();
 
     private int _capacity;
+    private bool _helpDismissed;
 
     public event EventHandler? Changed;
 
@@ -26,8 +31,18 @@ internal sealed class HistoryStore
         ArgumentOutOfRangeException.ThrowIfLessThan(capacity, 1);
 
         _filePath = filePath;
+        _helpDismissedPath = Path.ChangeExtension(filePath, ".help_dismissed");
         _capacity = capacity;
+        _helpDismissed = File.Exists(_helpDismissedPath);
         _items.AddRange(LoadFromDiskSafe());
+        if (!_helpDismissed && !_items.Exists(item => item.Kind == HistoryEntryKind.Help))
+        {
+            if (EnsureHelpEntryNoLock())
+            {
+                SaveNoLock();
+            }
+        }
+
         TrimNoLock();
     }
 
@@ -68,6 +83,11 @@ internal sealed class HistoryStore
             var index = _items.FindIndex(item => item.Id == id);
             if (index >= 0)
             {
+                if (_items[index].Kind == HistoryEntryKind.Help)
+                {
+                    MarkHelpDismissedNoLock();
+                }
+
                 _items.RemoveAt(index);
                 SaveNoLock();
                 removed = true;
@@ -90,6 +110,9 @@ internal sealed class HistoryStore
             if (_items.Count > 0)
             {
                 _items.Clear();
+                _helpDismissed = false;
+                TryDeleteHelpDismissedFile();
+                EnsureHelpEntryNoLock();
                 SaveNoLock();
                 cleared = true;
             }
@@ -121,6 +144,38 @@ internal sealed class HistoryStore
         if (trimmed)
         {
             Changed?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    private bool EnsureHelpEntryNoLock()
+    {
+        if (_items.Exists(item => item.Kind == HistoryEntryKind.Help))
+        {
+            return false;
+        }
+
+        _items.Add(new HistoryItem
+        {
+            Kind = HistoryEntryKind.Help,
+            Query = HelpSubtitle,
+            Result = HelpTitle,
+            Timestamp = DateTime.UtcNow.AddYears(-1),
+        });
+
+        return true;
+    }
+
+    private void MarkHelpDismissedNoLock()
+    {
+        _helpDismissed = true;
+        File.WriteAllText(_helpDismissedPath, "1");
+    }
+
+    private void TryDeleteHelpDismissedFile()
+    {
+        if (File.Exists(_helpDismissedPath))
+        {
+            File.Delete(_helpDismissedPath);
         }
     }
 

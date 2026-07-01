@@ -13,7 +13,7 @@ Add-Type -AssemblyName System.Drawing
 $root = Split-Path -Parent $PSScriptRoot
 if ([string]::IsNullOrWhiteSpace($Source)) {
     $rootIcon = Join-Path $root "icon.png"
-    $galleryDefault = Join-Path $root "gallery-submission\neil-sawhney\qalculate\icon.png"
+    $galleryDefault = Join-Path $root "CmdPal-Extensions\extensions\neilsawhney\powerqalc\icon.png"
     if (Test-Path $rootIcon) {
         $Source = $rootIcon
     }
@@ -23,7 +23,7 @@ if ([string]::IsNullOrWhiteSpace($Source)) {
 }
 
 $assetsDir = Join-Path $root "Qalculate\Assets"
-$galleryIcon = Join-Path $root "gallery-submission\neil-sawhney\qalculate\icon.png"
+$galleryIcon = Join-Path $root "CmdPal-Extensions\extensions\neilsawhney\powerqalc\icon.png"
 
 if (-not (Test-Path $Source)) {
     Write-Error "Source icon not found: $Source"
@@ -131,4 +131,4 @@ if ((Get-Item $galleryIcon).Length -gt 100KB) {
 }
 
 $sourceImage.Dispose()
-Write-Host "Done. Assets written to Qalculate\Assets and gallery-submission." -ForegroundColor Green
+Write-Host "Done. Assets written to Qalculate\Assets and CmdPal-Extensions gallery folder." -ForegroundColor Green

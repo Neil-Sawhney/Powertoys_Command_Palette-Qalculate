@@ -19,3 +19,5 @@ PUBLISH.md
 # User-specific
 .vs/
 *.user
+
+CmdPal-Extensions/

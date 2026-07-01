@@ -14,6 +14,7 @@ It also ships with a **huge library of built-in physical, chemical, and mathemat
 ## Features
 
 - Live evaluation as you type (with debounce); `ans()` and variables persist for the session
+- **Usage & help** appears once in history (scrolls down as you save results); remove it like any other entry
 - Calculation history when you copy (Enter) or save (Ctrl+Enter) — not on every keystroke
 - Copy results to the clipboard
 - Bundled `qalc` runtime — works out of the box, no separate Qalculate install
@@ -27,6 +28,7 @@ A few things to try — each shows a different capability:
 | What it shows | Example | Result (approx.) |
 |---------------|---------|------------------|
 | **Mixed units** | `5 miles + 10 km` | `18 km` |
+| **Session & variables** | `ans+1` · `B:=10 ft` then `B to cm` | Prior result; store as `B`, not `x` |
 | **Solve for x, convert result** | `10 mph * x = 20 mi to min` | `x = 120 min` |
 | **Percentages** | `240 * 15%` | `36` |
 | **Algebra** | `x^2 + 2x = 0` | `x = 0 or x = -2` |
@@ -56,7 +58,7 @@ After installing, run **Reload** in Command Palette.
 
 ## Publishing
 
-See Microsoft's guides for [WinGet](https://learn.microsoft.com/en-us/windows/powertoys/command-palette/publish-extension-winget) and the [Extension Gallery](https://learn.microsoft.com/en-us/windows/powertoys/command-palette/extension-gallery). Gallery metadata is in `gallery-submission/`; a WinGet manifest template is in `winget-template/`.
+See Microsoft's guides for [WinGet](https://learn.microsoft.com/en-us/windows/powertoys/command-palette/publish-extension-winget) and the [Extension Gallery](https://learn.microsoft.com/en-us/windows/powertoys/command-palette/extension-gallery). Gallery metadata is in `gallery-submission/neilsawhney/powerqalc/` (copy into your CmdPal-Extensions fork for the PR); a WinGet manifest template is in `winget-template/`.
 
 ## License
 

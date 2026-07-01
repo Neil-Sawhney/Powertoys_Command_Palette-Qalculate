@@ -19,15 +19,17 @@ public partial class QalculateCommandsProvider : CommandProvider
         Icon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png");
         Settings = _settings.Settings;
 
-        var page = new QalculatePage(_settings);
+        var helpPage = new HelpPage(_settings.History);
+        var page = new QalculatePage(_settings, helpPage);
         _commands = [
             new CommandItem(page)
             {
                 Title = DisplayName,
-                MoreCommands =
-                [
-                    new CommandContextItem(new ClearHistoryCommand(_settings.History)),
-                ],
+            },
+            new CommandItem(helpPage)
+            {
+                Title = "PowerQalc help",
+                Subtitle = "Conversions, percentages, and tips",
             },
         ];
     }

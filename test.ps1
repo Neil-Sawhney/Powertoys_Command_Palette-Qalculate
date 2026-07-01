@@ -18,11 +18,17 @@ Write-Host "Ensuring dev signing certificate..." -ForegroundColor Cyan
 & (Join-Path $root "scripts\ensure-dev-cert.ps1")
 if ($LASTEXITCODE -ne 0) { throw "ensure-dev-cert.ps1 failed" }
 
+# Build outside OneDrive — MSBuild cannot delete locked *_Debug_Test folders under sync.
+$debugAppPackages = Join-Path $env:LOCALAPPDATA "PowerQalc\AppPackages"
+& (Join-Path $root "scripts\prepare-debug-build.ps1") -AppPackagesDir $debugAppPackages
+if ($LASTEXITCODE -ne 0) { throw "prepare-debug-build.ps1 failed" }
+
 Write-Host "Building Debug x64 MSIX..." -ForegroundColor Cyan
-& $dotnet build $project -c Debug -p:Platform=x64 -p:RuntimeIdentifier=win-x64 -p:GenerateAppxPackageOnBuild=true
+Write-Host "  Output: $debugAppPackages" -ForegroundColor DarkGray
+& $dotnet build $project -c Debug -p:Platform=x64 -p:RuntimeIdentifier=win-x64 -p:GenerateAppxPackageOnBuild=true -p:AppxPackageDir="$debugAppPackages\"
 if ($LASTEXITCODE -ne 0) { throw "Debug MSIX build failed" }
 
-& (Join-Path $root "scripts\install-debug-msix.ps1") -Force
+& (Join-Path $root "scripts\install-debug-msix.ps1") -AppPackagesDir $debugAppPackages -Force
 
 Write-Host ""
 Write-Host "Installed. Open Command Palette and run: Reload"

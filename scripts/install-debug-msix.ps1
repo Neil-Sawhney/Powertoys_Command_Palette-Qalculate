@@ -5,14 +5,19 @@
     Installs the newest signed x64 Debug MSIX for local development.
 #>
 param(
-    [switch]$Force
+    [switch]$Force,
+    [string]$AppPackagesDir = ""
 )
 
 $ErrorActionPreference = "Stop"
 
 $root = Split-Path -Parent $PSScriptRoot
 $projectDir = Join-Path $root "Qalculate"
-$appPackages = Join-Path $projectDir "AppPackages"
+$appPackages = if ([string]::IsNullOrWhiteSpace($AppPackagesDir)) {
+    Join-Path $projectDir "AppPackages"
+} else {
+    $AppPackagesDir
+}
 $cerPath = Join-Path $projectDir "Qalculate_TemporaryKey.cer"
 $packageName = "neilsawhney.PowerQalc"
 

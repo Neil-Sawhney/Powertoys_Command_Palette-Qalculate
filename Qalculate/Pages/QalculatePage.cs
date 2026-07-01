@@ -16,21 +16,25 @@ internal sealed partial class QalculatePage : DynamicListPage
 {
     private static readonly IconInfo AppIcon = IconHelpers.FromRelativePath("Assets\\StoreLogo.png");
     private static readonly IconInfo HistoryIcon = new("\uE81C");
+    private static readonly IconInfo HelpIcon = new("\uE946");
 
     private readonly SettingsManager _settings;
+    private readonly HelpPage _helpPage;
     private CancellationTokenSource? _evaluationCts;
     private IListItem[] _items = [];
     private string _query = string.Empty;
 
-    public QalculatePage(SettingsManager settings)
+    public QalculatePage(SettingsManager settings, HelpPage helpPage)
     {
         _settings = settings;
+        _helpPage = helpPage;
         Icon = AppIcon;
         Title = "PowerQalc";
         Name = "PowerQalc";
-        PlaceholderText = "Try: 5 miles + 10 km, ans+1, x:=10 then x*2, 240 * 15%, 1 ly to km";
+        PlaceholderText = "Try: 5 miles + 10 km, 100 feet to m, 240 * 15%, 10 mph * x = 20 mi to min";
 
         _settings.History.Changed += OnHistoryChanged;
+        _items = BuildHistoryItems();
     }
 
     public override void UpdateSearchText(string oldSearch, string newSearch)
@@ -120,8 +124,8 @@ internal sealed partial class QalculatePage : DynamicListPage
             return [
                 new ListItem(new NoOpCommand())
                 {
-                    Title = "No recent calculations",
-                    Subtitle = "Enter copies and saves; Ctrl+Enter saves without copying",
+                    Title = "No saved calculations yet",
+                    Subtitle = "Enter copies a result · Ctrl+Enter saves without copying",
                     Icon = HistoryIcon,
                 },
             ];
@@ -133,8 +137,23 @@ internal sealed partial class QalculatePage : DynamicListPage
             .ToArray();
     }
 
-    private IListItem CreateHistoryListItem(HistoryItem item) =>
-        new ListItem(new CopyTextCommand(item.Result))
+    private IListItem CreateHistoryListItem(HistoryItem item)
+    {
+        if (item.Kind == HistoryEntryKind.Help)
+        {
+            return new ListItem(_helpPage)
+            {
+                Title = item.Result,
+                Subtitle = item.Query,
+                Icon = HelpIcon,
+                MoreCommands =
+                [
+                    new CommandContextItem(new DeleteHistoryCommand(_settings.History, item.Id)),
+                ],
+            };
+        }
+
+        return new ListItem(new CopyTextCommand(item.Result))
         {
             Title = item.Result,
             Subtitle = item.Query,
@@ -144,6 +163,7 @@ internal sealed partial class QalculatePage : DynamicListPage
                 new CommandContextItem(new DeleteHistoryCommand(_settings.History, item.Id)),
             ],
         };
+    }
 
     private IListItem[] BuildResultItems(string expression, QalculateResult result)
     {

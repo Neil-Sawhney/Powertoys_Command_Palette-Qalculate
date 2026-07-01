@@ -45,4 +45,4 @@ This policy may be updated from time to time. The "Last updated" date at the top
 
 ## Contact
 
-Questions or concerns: [GitHub Issues](https://github.com/neil-sawhney/Qalculate/issues)
+Questions or concerns: [GitHub Issues](https://github.com/Neil-Sawhney/PowerQalc/issues)

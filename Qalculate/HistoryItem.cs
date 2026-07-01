@@ -6,9 +6,17 @@ using System;
 
 namespace Qalculate;
 
+internal enum HistoryEntryKind
+{
+    Calculation = 0,
+    Help = 1,
+}
+
 internal sealed class HistoryItem
 {
     public Guid Id { get; set; } = Guid.NewGuid();
+
+    public HistoryEntryKind Kind { get; set; } = HistoryEntryKind.Calculation;
 
     public string Query { get; set; } = string.Empty;
 
