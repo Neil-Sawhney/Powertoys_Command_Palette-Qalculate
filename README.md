@@ -32,7 +32,8 @@ A few things to try — each shows a different capability:
 | **Solve for x, convert result** | `10 mph * x = 20 mi to min` | `x = 120 min` |
 | **Percentages** | `240 * 15%` | `36` |
 | **Algebra** | `x^2 + 2x = 0` | `x = 0 or x = -2` |
-| **Constants & exotic units** | `planck to eV s` · `1 ly to km` | Planck constant · ~9.5 trillion km |
+| **Named constants** | `planck to eV s` | Planck constant in eV·s |
+| **Exotic units** | `1 ly to km` | ~9.5 trillion km |
 
 Qalculate knows hundreds of constants (`FineStructure`, `proton_mass`, `SpeedOfLight`, …) and units from everyday measures to light years and electron-volts — use them in any expression.
 
@@ -40,25 +41,15 @@ Qalculate knows hundreds of constants (`FineStructure`, `proton_mass`, `SpeedOfL
 
 - Windows 10/11 with [PowerToys](https://github.com/microsoft/PowerToys) (Command Palette enabled)
 
-The published MSIX bundles the Qalculate CLI (`qalc`) — no extra install step for end users.
+PowerQalc bundles the Qalculate CLI (`qalc`) — no separate Qalculate install needed.
 
-## Local development
+## Installation
 
-```powershell
-# Bundle qalc, build, and install for local testing (admin)
-.\test.ps1
+Install from the [Microsoft Store](https://apps.microsoft.com/detail/9MZR396NKKGW), then enable **Command Palette** in PowerToys settings. Open Command Palette and search for **PowerQalc**.
 
-# Production Store upload bundle (x64 + ARM64 .msixbundle)
-.\build.ps1
-```
+After installing or updating, run **Reload** in Command Palette if the extension does not appear right away.
 
-Both scripts run `bundle-qalc.ps1` automatically. You need a local Qalculate install once (e.g. `winget install qalculate.qalculate`) so the bundle script can copy the runtime.
-
-After installing, run **Reload** in Command Palette.
-
-## Publishing
-
-See Microsoft's guides for [WinGet](https://learn.microsoft.com/en-us/windows/powertoys/command-palette/publish-extension-winget) and the [Extension Gallery](https://learn.microsoft.com/en-us/windows/powertoys/command-palette/extension-gallery). Gallery metadata is in `gallery-submission/neilsawhney/powerqalc/` (copy into your CmdPal-Extensions fork for the PR); a WinGet manifest template is in `winget-template/`.
+For quicker access, assign a short alias in **PowerToys → Command Palette → Extensions → PowerQalc** — for example, `q` lets you open it with `q` then Space in Command Palette.
 
 ## License
 
